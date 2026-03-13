@@ -13,3 +13,5 @@ wheels/
 .env
 *.md
 !README.md
+replay-cache/
+*.parquet
