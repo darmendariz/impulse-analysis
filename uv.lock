@@ -818,7 +818,7 @@ wheels = [
 [[package]]
 name = "impulse"
 version = "0.1.0"
-source = { directory = "../impulse" }
+source = { editable = "../impulse" }
 dependencies = [
     { name = "boto3" },
     { name = "ipympl" },
@@ -886,7 +886,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "impulse", directory = "../impulse" },
+    { name = "impulse", editable = "../impulse" },
     { name = "jupyter", specifier = ">=1.1.1" },
     { name = "matplotlib", specifier = ">=3.10.8" },
     { name = "numpy", specifier = ">=2.4.3" },

@@ -19,4 +19,4 @@ dependencies = [
 ]
 
 [tool.uv.sources]
-impulse = { path = "../impulse"}
+impulse = { path = "../impulse", editable = true }
