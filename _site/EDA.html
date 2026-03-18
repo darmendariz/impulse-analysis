@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>eda – Impulse Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-5b4ad623e5705c0698d39aec6f10cf02.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Impulse Analysis</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-eda" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">EDA</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-eda">    
+        <li>
+    <a class="dropdown-item" href="./notebooks/01_eda_dataset_level.html">
+ <span class="dropdown-text">1 · Dataset Level</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/02_eda_single_replay.html">
+ <span class="dropdown-text">2 · Single Replay</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/03_eda_feature-wise.html">
+ <span class="dropdown-text">3 · Feature-Wise</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/04_eda_segments.html">
+ <span class="dropdown-text">4 · Segments</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-models" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Models</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-models">    
+        <li>
+    <a class="dropdown-item" href="./notebooks/05_baseline_models.html">
+ <span class="dropdown-text">5 · Baseline Models</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./notebooks/06_linear_model.html">
+ <span class="dropdown-text">6 · Linear Model</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#exploratory-data-analysis-for-time-series-data" id="toc-exploratory-data-analysis-for-time-series-data" class="nav-link active" data-scroll-target="#exploratory-data-analysis-for-time-series-data">Exploratory Data Analysis for Time Series Data</a>
+  <ul class="collapse">
+  <li><a href="#data-characteristics" id="toc-data-characteristics" class="nav-link" data-scroll-target="#data-characteristics">Data Characteristics</a></li>
+  <li><a href="#dataset-level-statistics" id="toc-dataset-level-statistics" class="nav-link" data-scroll-target="#dataset-level-statistics">1. Dataset-Level Statistics</a>
+  <ul class="collapse">
+  <li><a href="#replay-length-distribution" id="toc-replay-length-distribution" class="nav-link" data-scroll-target="#replay-length-distribution">Replay Length Distribution</a></li>
+  <li><a href="#feature-coverage" id="toc-feature-coverage" class="nav-link" data-scroll-target="#feature-coverage">Feature Coverage</a></li>
+  </ul></li>
+  <li><a href="#univariate-time-series-analysis" id="toc-univariate-time-series-analysis" class="nav-link" data-scroll-target="#univariate-time-series-analysis">2. Univariate Time Series Analysis</a>
+  <ul class="collapse">
+  <li><a href="#basic-statistics" id="toc-basic-statistics" class="nav-link" data-scroll-target="#basic-statistics">2.1 Basic Statistics</a></li>
+  <li><a href="#stationarity" id="toc-stationarity" class="nav-link" data-scroll-target="#stationarity">2.2 Stationarity</a></li>
+  <li><a href="#autocorrelation" id="toc-autocorrelation" class="nav-link" data-scroll-target="#autocorrelation">2.3 Autocorrelation</a></li>
+  <li><a href="#spectral-analysis" id="toc-spectral-analysis" class="nav-link" data-scroll-target="#spectral-analysis">2.4 Spectral Analysis</a></li>
+  </ul></li>
+  <li><a href="#multivariate-analysis" id="toc-multivariate-analysis" class="nav-link" data-scroll-target="#multivariate-analysis">3. Multivariate Analysis</a>
+  <ul class="collapse">
+  <li><a href="#correlation-matrix" id="toc-correlation-matrix" class="nav-link" data-scroll-target="#correlation-matrix">3.1 Correlation Matrix</a></li>
+  <li><a href="#cross-correlation" id="toc-cross-correlation" class="nav-link" data-scroll-target="#cross-correlation">3.2 Cross-Correlation</a></li>
+  <li><a href="#principal-component-analysis-pca" id="toc-principal-component-analysis-pca" class="nav-link" data-scroll-target="#principal-component-analysis-pca">3.3 Principal Component Analysis (PCA)</a></li>
+  </ul></li>
+  <li><a href="#temporal-pattern-analysis" id="toc-temporal-pattern-analysis" class="nav-link" data-scroll-target="#temporal-pattern-analysis">4. Temporal Pattern Analysis</a>
+  <ul class="collapse">
+  <li><a href="#rolling-statistics" id="toc-rolling-statistics" class="nav-link" data-scroll-target="#rolling-statistics">4.1 Rolling Statistics</a></li>
+  <li><a href="#change-point-detection" id="toc-change-point-detection" class="nav-link" data-scroll-target="#change-point-detection">4.2 Change Point Detection</a></li>
+  <li><a href="#lag-features-and-differencing" id="toc-lag-features-and-differencing" class="nav-link" data-scroll-target="#lag-features-and-differencing">4.3 Lag Features and Differencing</a></li>
+  </ul></li>
+  <li><a href="#distribution-over-time" id="toc-distribution-over-time" class="nav-link" data-scroll-target="#distribution-over-time">5. Distribution Over Time</a>
+  <ul class="collapse">
+  <li><a href="#time-varying-distributions" id="toc-time-varying-distributions" class="nav-link" data-scroll-target="#time-varying-distributions">5.1 Time-Varying Distributions</a></li>
+  <li><a href="#phase-based-analysis" id="toc-phase-based-analysis" class="nav-link" data-scroll-target="#phase-based-analysis">5.2 Phase-Based Analysis</a></li>
+  </ul></li>
+  <li><a href="#event-specific-analysis" id="toc-event-specific-analysis" class="nav-link" data-scroll-target="#event-specific-analysis">6. Event-Specific Analysis</a>
+  <ul class="collapse">
+  <li><a href="#goal-events" id="toc-goal-events" class="nav-link" data-scroll-target="#goal-events">6.1 Goal Events</a></li>
+  <li><a href="#impact-events" id="toc-impact-events" class="nav-link" data-scroll-target="#impact-events">6.2 Impact Events</a></li>
+  <li><a href="#kickoff-events" id="toc-kickoff-events" class="nav-link" data-scroll-target="#kickoff-events">6.3 Kickoff Events</a></li>
+  </ul></li>
+  <li><a href="#data-quality-checks" id="toc-data-quality-checks" class="nav-link" data-scroll-target="#data-quality-checks">7. Data Quality Checks</a>
+  <ul class="collapse">
+  <li><a href="#physics-sanity-checks" id="toc-physics-sanity-checks" class="nav-link" data-scroll-target="#physics-sanity-checks">7.1 Physics Sanity Checks</a></li>
+  <li><a href="#sampling-issues" id="toc-sampling-issues" class="nav-link" data-scroll-target="#sampling-issues">7.2 Sampling Issues</a></li>
+  <li><a href="#player-slot-consistency" id="toc-player-slot-consistency" class="nav-link" data-scroll-target="#player-slot-consistency">7.3 Player Slot Consistency</a></li>
+  </ul></li>
+  <li><a href="#visualization-recommendations" id="toc-visualization-recommendations" class="nav-link" data-scroll-target="#visualization-recommendations">8. Visualization Recommendations</a>
+  <ul class="collapse">
+  <li><a href="#essential-plots-for-initial-eda" id="toc-essential-plots-for-initial-eda" class="nav-link" data-scroll-target="#essential-plots-for-initial-eda">Essential Plots for Initial EDA</a></li>
+  <li><a href="#interactive-visualization-jupyter" id="toc-interactive-visualization-jupyter" class="nav-link" data-scroll-target="#interactive-visualization-jupyter">Interactive Visualization (Jupyter)</a></li>
+  </ul></li>
+  <li><a href="#practical-workflow" id="toc-practical-workflow" class="nav-link" data-scroll-target="#practical-workflow">9. Practical Workflow</a>
+  <ul class="collapse">
+  <li><a href="#phase-1-dataset-overview" id="toc-phase-1-dataset-overview" class="nav-link" data-scroll-target="#phase-1-dataset-overview">Phase 1: Dataset Overview</a></li>
+  <li><a href="#phase-2-single-replay-deep-dive" id="toc-phase-2-single-replay-deep-dive" class="nav-link" data-scroll-target="#phase-2-single-replay-deep-dive">Phase 2: Single Replay Deep Dive</a></li>
+  <li><a href="#phase-3-cross-replay-patterns" id="toc-phase-3-cross-replay-patterns" class="nav-link" data-scroll-target="#phase-3-cross-replay-patterns">Phase 3: Cross-Replay Patterns</a></li>
+  <li><a href="#phase-4-task-specific-analysis" id="toc-phase-4-task-specific-analysis" class="nav-link" data-scroll-target="#phase-4-task-specific-analysis">Phase 4: Task-Specific Analysis</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 class="title display-7"></h1></header><div class="quarto-title-block"><div class="quarto-title-tools-only"><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+
+
+
+
+<section id="exploratory-data-analysis-for-time-series-data" class="level1">
+<h1>Exploratory Data Analysis for Time Series Data</h1>
+<p>This document covers EDA techniques relevant to the Impulse project’s Rocket League replay data.</p>
+<section id="data-characteristics" class="level2">
+<h2 class="anchored" data-anchor-id="data-characteristics">Data Characteristics</h2>
+<p>Each replay is a multivariate time series with shape <code>(frames, features)</code>: - <strong>Frames</strong>: Variable length (game duration varies, typically 500-10,000 frames at 10 FPS) - <strong>Features</strong>: Ball physics, player physics, game state (50-100 columns) - <strong>Sampling rate</strong>: Configurable FPS (default 10 Hz)</p>
+</section>
+<section id="dataset-level-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="dataset-level-statistics">1. Dataset-Level Statistics</h2>
+<p>Before analyzing individual time series, understand the dataset:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Key questions:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># - How many replays?</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># - Distribution of replay lengths (frames)?</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># - Distribution of player counts?</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># - Missing data patterns?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="replay-length-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="replay-length-distribution">Replay Length Distribution</h3>
+<ul>
+<li>Histogram of frame counts across all replays</li>
+<li>Identifies outliers (very short/long games)</li>
+<li>Informs padding/truncation strategy for ML</li>
+</ul>
+</section>
+<section id="feature-coverage" class="level3">
+<h3 class="anchored" data-anchor-id="feature-coverage">Feature Coverage</h3>
+<ul>
+<li>Which columns have data vs NaN?</li>
+<li>Per-player feature availability (not all replays have 8 players)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="univariate-time-series-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="univariate-time-series-analysis">2. Univariate Time Series Analysis</h2>
+<section id="basic-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="basic-statistics">2.1 Basic Statistics</h3>
+<p>For each feature, compute across all frames: - Mean, std, min, max, quartiles - Histogram / density plot - Check for invalid values (NaN, Inf, out-of-bounds)</p>
+</section>
+<section id="stationarity" class="level3">
+<h3 class="anchored" data-anchor-id="stationarity">2.2 Stationarity</h3>
+<p>Time series can be <strong>stationary</strong> (statistical properties constant over time) or <strong>non-stationary</strong>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Stationary</th>
+<th>Non-Stationary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mean</td>
+<td>Constant</td>
+<td>Drifts over time</td>
+</tr>
+<tr class="even">
+<td>Variance</td>
+<td>Constant</td>
+<td>Changes over time</td>
+</tr>
+<tr class="odd">
+<td>Autocorrelation</td>
+<td>Depends only on lag</td>
+<td>Depends on absolute time</td>
+</tr>
+</tbody>
+</table>
+<p><strong>For Rocket League data:</strong> - Ball/player positions are non-stationary (they move around) - Velocities may be closer to stationary - This affects model choice - many classical models assume stationarity</p>
+<p><strong>Tests:</strong> - Augmented Dickey-Fuller (ADF) test: null hypothesis is non-stationary - KPSS test: null hypothesis is stationary</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.stattools <span class="im">import</span> adfuller, kpss</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> adfuller(series)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'ADF Statistic: </span><span class="sc">{</span>result[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">, p-value: </span><span class="sc">{</span>result[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="autocorrelation" class="level3">
+<h3 class="anchored" data-anchor-id="autocorrelation">2.3 Autocorrelation</h3>
+<p>Measures correlation between a signal and lagged versions of itself.</p>
+<p><strong>ACF (Autocorrelation Function)</strong> - Correlation between y(t) and y(t-k) for various lags k - Shows total correlation at each lag</p>
+<p><strong>PACF (Partial Autocorrelation Function)</strong> - Direct correlation at lag k, removing effects of intermediate lags - Useful for determining AR model order</p>
+<p><strong>Interpretation for replay data:</strong> - High autocorrelation at short lags = smooth, predictable motion - Rapid decay = signal changes quickly (impacts, direction changes) - The lag where ACF drops below significance tells you the “memory” of the system</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.graphics.tsaplots <span class="im">import</span> plot_acf, plot_pacf</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>plot_acf(series, lags<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>plot_pacf(series, lags<span class="op">=</span><span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="spectral-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="spectral-analysis">2.4 Spectral Analysis</h3>
+<p>Transforms time-domain signal to frequency domain using FFT.</p>
+<p><strong>What it reveals:</strong> - Dominant frequencies/periodicities - Whether signal is smooth (low frequency) vs noisy (high frequency) - Sampling adequacy (Nyquist: can detect frequencies up to FPS/2)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.fft <span class="im">import</span> fft, fftfreq</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>yf <span class="op">=</span> fft(series)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>xf <span class="op">=</span> fftfreq(<span class="bu">len</span>(series), <span class="dv">1</span><span class="op">/</span>fps)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>power <span class="op">=</span> np.<span class="bu">abs</span>(yf)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plt.plot(xf[:<span class="bu">len</span>(xf)<span class="op">//</span><span class="dv">2</span>], power[:<span class="bu">len</span>(power)<span class="op">//</span><span class="dv">2</span>])</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Frequency (Hz)'</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Power'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>For replay data at 10 FPS:</strong> - Can detect patterns up to 5 Hz - Game events (kickoffs) may appear as low-frequency components - Impact events appear as broadband energy</p>
+<hr>
+</section>
+</section>
+<section id="multivariate-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="multivariate-analysis">3. Multivariate Analysis</h2>
+<section id="correlation-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="correlation-matrix">3.1 Correlation Matrix</h3>
+<ul>
+<li>Pairwise correlations between all features</li>
+<li>Identify redundant features (highly correlated)</li>
+<li>Find unexpected relationships</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>correlation_matrix <span class="op">=</span> df[feature_columns].corr()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>sns.heatmap(correlation_matrix, cmap<span class="op">=</span><span class="st">'coolwarm'</span>, center<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="cross-correlation" class="level3">
+<h3 class="anchored" data-anchor-id="cross-correlation">3.2 Cross-Correlation</h3>
+<p>Correlation between two signals at various time lags.</p>
+<p><strong>Use cases:</strong> - Does player position predict ball position with some lag? - Do players react to ball movement with a delay?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.signal <span class="im">import</span> correlate</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>cross_corr <span class="op">=</span> correlate(signal_a, signal_b, mode<span class="op">=</span><span class="st">'full'</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>lags <span class="op">=</span> np.arange(<span class="op">-</span><span class="bu">len</span>(signal_a)<span class="op">+</span><span class="dv">1</span>, <span class="bu">len</span>(signal_a))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="principal-component-analysis-pca" class="level3">
+<h3 class="anchored" data-anchor-id="principal-component-analysis-pca">3.3 Principal Component Analysis (PCA)</h3>
+<p>Reduce dimensionality while preserving variance.</p>
+<ul>
+<li>How many components explain 90% of variance?</li>
+<li>What do the principal components represent?</li>
+<li>Useful for visualization and feature reduction</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="temporal-pattern-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="temporal-pattern-analysis">4. Temporal Pattern Analysis</h2>
+<section id="rolling-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="rolling-statistics">4.1 Rolling Statistics</h3>
+<p>Compute statistics over sliding windows to see how properties change.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>window_size <span class="op">=</span> <span class="dv">30</span>  <span class="co"># 3 seconds at 10 FPS</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>rolling_mean <span class="op">=</span> series.rolling(window_size).mean()</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>rolling_std <span class="op">=</span> series.rolling(window_size).std()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>For replay data:</strong> - Rolling velocity magnitude = intensity of play - Rolling std of ball position = how “contested” a period is - Sudden changes in rolling stats = game state transitions</p>
+</section>
+<section id="change-point-detection" class="level3">
+<h3 class="anchored" data-anchor-id="change-point-detection">4.2 Change Point Detection</h3>
+<p>Identify moments where statistical properties change abruptly.</p>
+<p><strong>Methods:</strong> - Threshold on derivative magnitude (simple) - CUSUM (cumulative sum) - Bayesian change point detection (ruptures library)</p>
+<p><strong>For replay data:</strong> - Velocity change points = ball impacts - Position change points = teleports/resets (kickoffs, goals)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simple impact detection</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>velocity_magnitude <span class="op">=</span> np.sqrt(vx<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> vy<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> vz<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>delta_v <span class="op">=</span> np.<span class="bu">abs</span>(np.diff(velocity_magnitude))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>impact_frames <span class="op">=</span> np.where(delta_v <span class="op">&gt;</span> threshold)[<span class="dv">0</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="lag-features-and-differencing" class="level3">
+<h3 class="anchored" data-anchor-id="lag-features-and-differencing">4.3 Lag Features and Differencing</h3>
+<p><strong>Differencing:</strong> - First difference: y’(t) = y(t) - y(t-1) → velocity if y is position - Second difference: y’‘(t) = y’(t) - y’(t-1) → acceleration</p>
+<p><strong>Lag features:</strong> - Include y(t-1), y(t-2), …, y(t-k) as model inputs - The optimal k depends on autocorrelation structure</p>
+<hr>
+</section>
+</section>
+<section id="distribution-over-time" class="level2">
+<h2 class="anchored" data-anchor-id="distribution-over-time">5. Distribution Over Time</h2>
+<section id="time-varying-distributions" class="level3">
+<h3 class="anchored" data-anchor-id="time-varying-distributions">5.1 Time-Varying Distributions</h3>
+<p>Instead of one histogram for all data, see how distributions change:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Heatmap: x=time bins, y=value bins, color=frequency</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Shows how ball height distribution changes through game</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="phase-based-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="phase-based-analysis">5.2 Phase-Based Analysis</h3>
+<p>Split replay into phases and compare: - Early game (first 60 seconds) - Mid game - Late game / overtime</p>
+<p>Do statistical properties differ by phase?</p>
+<hr>
+</section>
+</section>
+<section id="event-specific-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="event-specific-analysis">6. Event-Specific Analysis</h2>
+<section id="goal-events" class="level3">
+<h3 class="anchored" data-anchor-id="goal-events">6.1 Goal Events</h3>
+<ul>
+<li>What does the data look like in the N seconds before a goal?</li>
+<li>Ball velocity, position relative to goal</li>
+<li>Player positions</li>
+</ul>
+</section>
+<section id="impact-events" class="level3">
+<h3 class="anchored" data-anchor-id="impact-events">6.2 Impact Events</h3>
+<ul>
+<li>Distribution of velocity changes at impacts</li>
+<li>Time between impacts</li>
+<li>Impact frequency vs game phase</li>
+</ul>
+</section>
+<section id="kickoff-events" class="level3">
+<h3 class="anchored" data-anchor-id="kickoff-events">6.3 Kickoff Events</h3>
+<ul>
+<li>Identified by “seconds remaining” resets or position resets</li>
+<li>Segment replays by kickoff-to-kickoff</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="data-quality-checks" class="level2">
+<h2 class="anchored" data-anchor-id="data-quality-checks">7. Data Quality Checks</h2>
+<section id="physics-sanity-checks" class="level3">
+<h3 class="anchored" data-anchor-id="physics-sanity-checks">7.1 Physics Sanity Checks</h3>
+<ul>
+<li>Gravity: Δvz per frame should be consistent (~-650 uu/s² in Rocket League)</li>
+<li>Ball speed cap: max ~6000 uu/s</li>
+<li>Arena bounds: positions should stay within field dimensions</li>
+<li>No teleportation: large position jumps without matching velocity</li>
+</ul>
+</section>
+<section id="sampling-issues" class="level3">
+<h3 class="anchored" data-anchor-id="sampling-issues">7.2 Sampling Issues</h3>
+<ul>
+<li>Are there gaps in the data (missing frames)?</li>
+<li>Is the sampling rate consistent?</li>
+<li>Check <code>current_time</code> or <code>frame_time</code> columns for irregularities</li>
+</ul>
+</section>
+<section id="player-slot-consistency" class="level3">
+<h3 class="anchored" data-anchor-id="player-slot-consistency">7.3 Player Slot Consistency</h3>
+<ul>
+<li>Do player slots (p0, p1, …) map consistently within a replay?</li>
+<li>Are there replays with unexpected player counts?</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="visualization-recommendations" class="level2">
+<h2 class="anchored" data-anchor-id="visualization-recommendations">8. Visualization Recommendations</h2>
+<section id="essential-plots-for-initial-eda" class="level3">
+<h3 class="anchored" data-anchor-id="essential-plots-for-initial-eda">Essential Plots for Initial EDA</h3>
+<ol type="1">
+<li><strong>Replay length histogram</strong> - understand data scale</li>
+<li><strong>3D trajectory plot</strong> (single replay) - visual intuition</li>
+<li><strong>Velocity magnitude over time</strong> (single replay) - see impacts</li>
+<li><strong>Time-between-impacts histogram</strong> - quantify discontinuity</li>
+<li><strong>Autocorrelation plot</strong> - understand temporal structure</li>
+<li><strong>Feature correlation heatmap</strong> - identify redundancies</li>
+</ol>
+</section>
+<section id="interactive-visualization-jupyter" class="level3">
+<h3 class="anchored" data-anchor-id="interactive-visualization-jupyter">Interactive Visualization (Jupyter)</h3>
+<ul>
+<li>Use plotly for 3D trajectories (rotate/zoom)</li>
+<li>Use ipywidgets for parameter exploration</li>
+<li>Animate ball movement over time</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="practical-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="practical-workflow">9. Practical Workflow</h2>
+<section id="phase-1-dataset-overview" class="level3">
+<h3 class="anchored" data-anchor-id="phase-1-dataset-overview">Phase 1: Dataset Overview</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load sample of replays</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>loader <span class="op">=</span> ReplayDataset(data_dir, db_path)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> loader.load_sample(n<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic stats</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Replays: </span><span class="sc">{</span><span class="bu">len</span>(sample)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Frame counts: </span><span class="sc">{</span>[<span class="bu">len</span>(r) <span class="cf">for</span> r <span class="kw">in</span> sample]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="phase-2-single-replay-deep-dive" class="level3">
+<h3 class="anchored" data-anchor-id="phase-2-single-replay-deep-dive">Phase 2: Single Replay Deep Dive</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pick one replay and understand it thoroughly</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>replay <span class="op">=</span> sample[<span class="dv">0</span>]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>plot_trajectory_3d(replay)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>plot_velocity_over_time(replay)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>plot_acf(replay[<span class="st">'Ball - linear velocity x'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="phase-3-cross-replay-patterns" class="level3">
+<h3 class="anchored" data-anchor-id="phase-3-cross-replay-patterns">Phase 3: Cross-Replay Patterns</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Aggregate statistics across replays</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>all_velocities <span class="op">=</span> concatenate ball velocities <span class="im">from</span> <span class="bu">all</span> replays</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>plot_histogram(all_velocities)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>compute_mean_autocorrelation()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="phase-4-task-specific-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="phase-4-task-specific-analysis">Phase 4: Task-Specific Analysis</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For ball prediction task:</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># - How does prediction error grow with horizon?</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># - What's the distribution of time-between-impacts?</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># - Can we identify "easy" vs "hard" prediction windows?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li><a href="https://www.statsmodels.org/">statsmodels documentation</a> - ACF, PACF, stationarity tests</li>
+<li><a href="https://docs.scipy.org/doc/scipy/reference/signal.html">scipy.signal</a> - spectral analysis, filtering</li>
+<li><a href="https://centre-borelli.github.io/ruptures-docs/">ruptures</a> - change point detection</li>
+<li><a href="https://tslearn.readthedocs.io/">tslearn</a> - time series clustering, DTW</li>
+</ul>
+
+
+<!-- -->
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Exploratory Data Analysis for Time Series Data</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>This document covers EDA techniques relevant to the Impulse project's Rocket League replay data.</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Characteristics</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>Each replay is a multivariate time series with shape <span class="in">`(frames, features)`</span>:</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Frames**: Variable length (game duration varies, typically 500-10,000 frames at 10 FPS)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Features**: Ball physics, player physics, game state (50-100 columns)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Sampling rate**: Configurable FPS (default 10 Hz)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1. Dataset-Level Statistics</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>Before analyzing individual time series, understand the dataset:</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Key questions:</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="co"># - How many replays?</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co"># - Distribution of replay lengths (frames)?</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co"># - Distribution of player counts?</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co"># - Missing data patterns?</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="fu">### Replay Length Distribution</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Histogram of frame counts across all replays</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Identifies outliers (very short/long games)</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Informs padding/truncation strategy for ML</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="fu">### Feature Coverage</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Which columns have data vs NaN?</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Per-player feature availability (not all replays have 8 players)</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. Univariate Time Series Analysis</span></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2.1 Basic Statistics</span></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>For each feature, compute across all frames:</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Mean, std, min, max, quartiles</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Histogram / density plot</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Check for invalid values (NaN, Inf, out-of-bounds)</span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2.2 Stationarity</span></span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>Time series can be **stationary** (statistical properties constant over time) or **non-stationary**.</span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Property <span class="pp">|</span> Stationary <span class="pp">|</span> Non-Stationary <span class="pp">|</span></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a><span class="pp">|----------|------------|----------------|</span></span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Mean <span class="pp">|</span> Constant <span class="pp">|</span> Drifts over time <span class="pp">|</span></span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variance <span class="pp">|</span> Constant <span class="pp">|</span> Changes over time <span class="pp">|</span></span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Autocorrelation <span class="pp">|</span> Depends only on lag <span class="pp">|</span> Depends on absolute time <span class="pp">|</span></span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>**For Rocket League data:**</span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Ball/player positions are non-stationary (they move around)</span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Velocities may be closer to stationary</span>
+<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This affects model choice - many classical models assume stationarity</span>
+<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a>**Tests:**</span>
+<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Augmented Dickey-Fuller (ADF) test: null hypothesis is non-stationary</span>
+<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>KPSS test: null hypothesis is stationary</span>
+<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.stattools <span class="im">import</span> adfuller, kpss</span>
+<span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-64"><a href="#cb14-64" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> adfuller(series)</span>
+<span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'ADF Statistic: </span><span class="sc">{</span>result[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">, p-value: </span><span class="sc">{</span>result[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-68"><a href="#cb14-68" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2.3 Autocorrelation</span></span>
+<span id="cb14-69"><a href="#cb14-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-70"><a href="#cb14-70" aria-hidden="true" tabindex="-1"></a>Measures correlation between a signal and lagged versions of itself.</span>
+<span id="cb14-71"><a href="#cb14-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-72"><a href="#cb14-72" aria-hidden="true" tabindex="-1"></a>**ACF (Autocorrelation Function)**</span>
+<span id="cb14-73"><a href="#cb14-73" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Correlation between y(t) and y(t-k) for various lags k</span>
+<span id="cb14-74"><a href="#cb14-74" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Shows total correlation at each lag</span>
+<span id="cb14-75"><a href="#cb14-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-76"><a href="#cb14-76" aria-hidden="true" tabindex="-1"></a>**PACF (Partial Autocorrelation Function)**</span>
+<span id="cb14-77"><a href="#cb14-77" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Direct correlation at lag k, removing effects of intermediate lags</span>
+<span id="cb14-78"><a href="#cb14-78" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Useful for determining AR model order</span>
+<span id="cb14-79"><a href="#cb14-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-80"><a href="#cb14-80" aria-hidden="true" tabindex="-1"></a>**Interpretation for replay data:**</span>
+<span id="cb14-81"><a href="#cb14-81" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>High autocorrelation at short lags = smooth, predictable motion</span>
+<span id="cb14-82"><a href="#cb14-82" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Rapid decay = signal changes quickly (impacts, direction changes)</span>
+<span id="cb14-83"><a href="#cb14-83" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The lag where ACF drops below significance tells you the "memory" of the system</span>
+<span id="cb14-84"><a href="#cb14-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-85"><a href="#cb14-85" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb14-86"><a href="#cb14-86" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.graphics.tsaplots <span class="im">import</span> plot_acf, plot_pacf</span>
+<span id="cb14-87"><a href="#cb14-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-88"><a href="#cb14-88" aria-hidden="true" tabindex="-1"></a>plot_acf(series, lags<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb14-89"><a href="#cb14-89" aria-hidden="true" tabindex="-1"></a>plot_pacf(series, lags<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb14-90"><a href="#cb14-90" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-91"><a href="#cb14-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-92"><a href="#cb14-92" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2.4 Spectral Analysis</span></span>
+<span id="cb14-93"><a href="#cb14-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-94"><a href="#cb14-94" aria-hidden="true" tabindex="-1"></a>Transforms time-domain signal to frequency domain using FFT.</span>
+<span id="cb14-95"><a href="#cb14-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-96"><a href="#cb14-96" aria-hidden="true" tabindex="-1"></a>**What it reveals:**</span>
+<span id="cb14-97"><a href="#cb14-97" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Dominant frequencies/periodicities</span>
+<span id="cb14-98"><a href="#cb14-98" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Whether signal is smooth (low frequency) vs noisy (high frequency)</span>
+<span id="cb14-99"><a href="#cb14-99" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Sampling adequacy (Nyquist: can detect frequencies up to FPS/2)</span>
+<span id="cb14-100"><a href="#cb14-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-101"><a href="#cb14-101" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb14-102"><a href="#cb14-102" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.fft <span class="im">import</span> fft, fftfreq</span>
+<span id="cb14-103"><a href="#cb14-103" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb14-104"><a href="#cb14-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-105"><a href="#cb14-105" aria-hidden="true" tabindex="-1"></a>yf <span class="op">=</span> fft(series)</span>
+<span id="cb14-106"><a href="#cb14-106" aria-hidden="true" tabindex="-1"></a>xf <span class="op">=</span> fftfreq(<span class="bu">len</span>(series), <span class="dv">1</span><span class="op">/</span>fps)</span>
+<span id="cb14-107"><a href="#cb14-107" aria-hidden="true" tabindex="-1"></a>power <span class="op">=</span> np.<span class="bu">abs</span>(yf)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb14-108"><a href="#cb14-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-109"><a href="#cb14-109" aria-hidden="true" tabindex="-1"></a>plt.plot(xf[:<span class="bu">len</span>(xf)<span class="op">//</span><span class="dv">2</span>], power[:<span class="bu">len</span>(power)<span class="op">//</span><span class="dv">2</span>])</span>
+<span id="cb14-110"><a href="#cb14-110" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Frequency (Hz)'</span>)</span>
+<span id="cb14-111"><a href="#cb14-111" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Power'</span>)</span>
+<span id="cb14-112"><a href="#cb14-112" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-113"><a href="#cb14-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-114"><a href="#cb14-114" aria-hidden="true" tabindex="-1"></a>**For replay data at 10 FPS:**</span>
+<span id="cb14-115"><a href="#cb14-115" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Can detect patterns up to 5 Hz</span>
+<span id="cb14-116"><a href="#cb14-116" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Game events (kickoffs) may appear as low-frequency components</span>
+<span id="cb14-117"><a href="#cb14-117" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Impact events appear as broadband energy</span>
+<span id="cb14-118"><a href="#cb14-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-119"><a href="#cb14-119" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb14-120"><a href="#cb14-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-121"><a href="#cb14-121" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. Multivariate Analysis</span></span>
+<span id="cb14-122"><a href="#cb14-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-123"><a href="#cb14-123" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3.1 Correlation Matrix</span></span>
+<span id="cb14-124"><a href="#cb14-124" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Pairwise correlations between all features</span>
+<span id="cb14-125"><a href="#cb14-125" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Identify redundant features (highly correlated)</span>
+<span id="cb14-126"><a href="#cb14-126" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Find unexpected relationships</span>
+<span id="cb14-127"><a href="#cb14-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-128"><a href="#cb14-128" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb14-129"><a href="#cb14-129" aria-hidden="true" tabindex="-1"></a>correlation_matrix <span class="op">=</span> df[feature_columns].corr()</span>
+<span id="cb14-130"><a href="#cb14-130" aria-hidden="true" tabindex="-1"></a>sns.heatmap(correlation_matrix, cmap<span class="op">=</span><span class="st">'coolwarm'</span>, center<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb14-131"><a href="#cb14-131" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-132"><a href="#cb14-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-133"><a href="#cb14-133" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3.2 Cross-Correlation</span></span>
+<span id="cb14-134"><a href="#cb14-134" aria-hidden="true" tabindex="-1"></a>Correlation between two signals at various time lags.</span>
+<span id="cb14-135"><a href="#cb14-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-136"><a href="#cb14-136" aria-hidden="true" tabindex="-1"></a>**Use cases:**</span>
+<span id="cb14-137"><a href="#cb14-137" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Does player position predict ball position with some lag?</span>
+<span id="cb14-138"><a href="#cb14-138" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Do players react to ball movement with a delay?</span>
+<span id="cb14-139"><a href="#cb14-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-140"><a href="#cb14-140" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb14-141"><a href="#cb14-141" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.signal <span class="im">import</span> correlate</span>
+<span id="cb14-142"><a href="#cb14-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-143"><a href="#cb14-143" aria-hidden="true" tabindex="-1"></a>cross_corr <span class="op">=</span> correlate(signal_a, signal_b, mode<span class="op">=</span><span class="st">'full'</span>)</span>
+<span id="cb14-144"><a href="#cb14-144" aria-hidden="true" tabindex="-1"></a>lags <span class="op">=</span> np.arange(<span class="op">-</span><span class="bu">len</span>(signal_a)<span class="op">+</span><span class="dv">1</span>, <span class="bu">len</span>(signal_a))</span>
+<span id="cb14-145"><a href="#cb14-145" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-146"><a href="#cb14-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-147"><a href="#cb14-147" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3.3 Principal Component Analysis (PCA)</span></span>
+<span id="cb14-148"><a href="#cb14-148" aria-hidden="true" tabindex="-1"></a>Reduce dimensionality while preserving variance.</span>
+<span id="cb14-149"><a href="#cb14-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-150"><a href="#cb14-150" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>How many components explain 90% of variance?</span>
+<span id="cb14-151"><a href="#cb14-151" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>What do the principal components represent?</span>
+<span id="cb14-152"><a href="#cb14-152" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Useful for visualization and feature reduction</span>
+<span id="cb14-153"><a href="#cb14-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-154"><a href="#cb14-154" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb14-155"><a href="#cb14-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-156"><a href="#cb14-156" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4. Temporal Pattern Analysis</span></span>
+<span id="cb14-157"><a href="#cb14-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-158"><a href="#cb14-158" aria-hidden="true" tabindex="-1"></a><span class="fu">### 4.1 Rolling Statistics</span></span>
+<span id="cb14-159"><a href="#cb14-159" aria-hidden="true" tabindex="-1"></a>Compute statistics over sliding windows to see how properties change.</span>
+<span id="cb14-160"><a href="#cb14-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-161"><a href="#cb14-161" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb14-162"><a href="#cb14-162" aria-hidden="true" tabindex="-1"></a>window_size <span class="op">=</span> <span class="dv">30</span>  <span class="co"># 3 seconds at 10 FPS</span></span>
+<span id="cb14-163"><a href="#cb14-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-164"><a href="#cb14-164" aria-hidden="true" tabindex="-1"></a>rolling_mean <span class="op">=</span> series.rolling(window_size).mean()</span>
+<span id="cb14-165"><a href="#cb14-165" aria-hidden="true" tabindex="-1"></a>rolling_std <span class="op">=</span> series.rolling(window_size).std()</span>
+<span id="cb14-166"><a href="#cb14-166" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-167"><a href="#cb14-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-168"><a href="#cb14-168" aria-hidden="true" tabindex="-1"></a>**For replay data:**</span>
+<span id="cb14-169"><a href="#cb14-169" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Rolling velocity magnitude = intensity of play</span>
+<span id="cb14-170"><a href="#cb14-170" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Rolling std of ball position = how "contested" a period is</span>
+<span id="cb14-171"><a href="#cb14-171" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Sudden changes in rolling stats = game state transitions</span>
+<span id="cb14-172"><a href="#cb14-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-173"><a href="#cb14-173" aria-hidden="true" tabindex="-1"></a><span class="fu">### 4.2 Change Point Detection</span></span>
+<span id="cb14-174"><a href="#cb14-174" aria-hidden="true" tabindex="-1"></a>Identify moments where statistical properties change abruptly.</span>
+<span id="cb14-175"><a href="#cb14-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-176"><a href="#cb14-176" aria-hidden="true" tabindex="-1"></a>**Methods:**</span>
+<span id="cb14-177"><a href="#cb14-177" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Threshold on derivative magnitude (simple)</span>
+<span id="cb14-178"><a href="#cb14-178" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>CUSUM (cumulative sum)</span>
+<span id="cb14-179"><a href="#cb14-179" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Bayesian change point detection (ruptures library)</span>
+<span id="cb14-180"><a href="#cb14-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-181"><a href="#cb14-181" aria-hidden="true" tabindex="-1"></a>**For replay data:**</span>
+<span id="cb14-182"><a href="#cb14-182" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Velocity change points = ball impacts</span>
+<span id="cb14-183"><a href="#cb14-183" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Position change points = teleports/resets (kickoffs, goals)</span>
+<span id="cb14-184"><a href="#cb14-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-185"><a href="#cb14-185" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb14-186"><a href="#cb14-186" aria-hidden="true" tabindex="-1"></a><span class="co"># Simple impact detection</span></span>
+<span id="cb14-187"><a href="#cb14-187" aria-hidden="true" tabindex="-1"></a>velocity_magnitude <span class="op">=</span> np.sqrt(vx<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> vy<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> vz<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb14-188"><a href="#cb14-188" aria-hidden="true" tabindex="-1"></a>delta_v <span class="op">=</span> np.<span class="bu">abs</span>(np.diff(velocity_magnitude))</span>
+<span id="cb14-189"><a href="#cb14-189" aria-hidden="true" tabindex="-1"></a>impact_frames <span class="op">=</span> np.where(delta_v <span class="op">&gt;</span> threshold)[<span class="dv">0</span>]</span>
+<span id="cb14-190"><a href="#cb14-190" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-191"><a href="#cb14-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-192"><a href="#cb14-192" aria-hidden="true" tabindex="-1"></a><span class="fu">### 4.3 Lag Features and Differencing</span></span>
+<span id="cb14-193"><a href="#cb14-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-194"><a href="#cb14-194" aria-hidden="true" tabindex="-1"></a>**Differencing:**</span>
+<span id="cb14-195"><a href="#cb14-195" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>First difference: y'(t) = y(t) - y(t-1) → velocity if y is position</span>
+<span id="cb14-196"><a href="#cb14-196" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Second difference: y''(t) = y'(t) - y'(t-1) → acceleration</span>
+<span id="cb14-197"><a href="#cb14-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-198"><a href="#cb14-198" aria-hidden="true" tabindex="-1"></a>**Lag features:**</span>
+<span id="cb14-199"><a href="#cb14-199" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Include y(t-1), y(t-2), ..., y(t-k) as model inputs</span>
+<span id="cb14-200"><a href="#cb14-200" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The optimal k depends on autocorrelation structure</span>
+<span id="cb14-201"><a href="#cb14-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-202"><a href="#cb14-202" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb14-203"><a href="#cb14-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-204"><a href="#cb14-204" aria-hidden="true" tabindex="-1"></a><span class="fu">## 5. Distribution Over Time</span></span>
+<span id="cb14-205"><a href="#cb14-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-206"><a href="#cb14-206" aria-hidden="true" tabindex="-1"></a><span class="fu">### 5.1 Time-Varying Distributions</span></span>
+<span id="cb14-207"><a href="#cb14-207" aria-hidden="true" tabindex="-1"></a>Instead of one histogram for all data, see how distributions change:</span>
+<span id="cb14-208"><a href="#cb14-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-209"><a href="#cb14-209" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb14-210"><a href="#cb14-210" aria-hidden="true" tabindex="-1"></a><span class="co"># Heatmap: x=time bins, y=value bins, color=frequency</span></span>
+<span id="cb14-211"><a href="#cb14-211" aria-hidden="true" tabindex="-1"></a><span class="co"># Shows how ball height distribution changes through game</span></span>
+<span id="cb14-212"><a href="#cb14-212" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-213"><a href="#cb14-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-214"><a href="#cb14-214" aria-hidden="true" tabindex="-1"></a><span class="fu">### 5.2 Phase-Based Analysis</span></span>
+<span id="cb14-215"><a href="#cb14-215" aria-hidden="true" tabindex="-1"></a>Split replay into phases and compare:</span>
+<span id="cb14-216"><a href="#cb14-216" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Early game (first 60 seconds)</span>
+<span id="cb14-217"><a href="#cb14-217" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Mid game</span>
+<span id="cb14-218"><a href="#cb14-218" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Late game / overtime</span>
+<span id="cb14-219"><a href="#cb14-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-220"><a href="#cb14-220" aria-hidden="true" tabindex="-1"></a>Do statistical properties differ by phase?</span>
+<span id="cb14-221"><a href="#cb14-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-222"><a href="#cb14-222" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb14-223"><a href="#cb14-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-224"><a href="#cb14-224" aria-hidden="true" tabindex="-1"></a><span class="fu">## 6. Event-Specific Analysis</span></span>
+<span id="cb14-225"><a href="#cb14-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-226"><a href="#cb14-226" aria-hidden="true" tabindex="-1"></a><span class="fu">### 6.1 Goal Events</span></span>
+<span id="cb14-227"><a href="#cb14-227" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>What does the data look like in the N seconds before a goal?</span>
+<span id="cb14-228"><a href="#cb14-228" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Ball velocity, position relative to goal</span>
+<span id="cb14-229"><a href="#cb14-229" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Player positions</span>
+<span id="cb14-230"><a href="#cb14-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-231"><a href="#cb14-231" aria-hidden="true" tabindex="-1"></a><span class="fu">### 6.2 Impact Events</span></span>
+<span id="cb14-232"><a href="#cb14-232" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Distribution of velocity changes at impacts</span>
+<span id="cb14-233"><a href="#cb14-233" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Time between impacts</span>
+<span id="cb14-234"><a href="#cb14-234" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Impact frequency vs game phase</span>
+<span id="cb14-235"><a href="#cb14-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-236"><a href="#cb14-236" aria-hidden="true" tabindex="-1"></a><span class="fu">### 6.3 Kickoff Events</span></span>
+<span id="cb14-237"><a href="#cb14-237" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Identified by "seconds remaining" resets or position resets</span>
+<span id="cb14-238"><a href="#cb14-238" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Segment replays by kickoff-to-kickoff</span>
+<span id="cb14-239"><a href="#cb14-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-240"><a href="#cb14-240" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb14-241"><a href="#cb14-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-242"><a href="#cb14-242" aria-hidden="true" tabindex="-1"></a><span class="fu">## 7. Data Quality Checks</span></span>
+<span id="cb14-243"><a href="#cb14-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-244"><a href="#cb14-244" aria-hidden="true" tabindex="-1"></a><span class="fu">### 7.1 Physics Sanity Checks</span></span>
+<span id="cb14-245"><a href="#cb14-245" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gravity: Δvz per frame should be consistent (~-650 uu/s² in Rocket League)</span>
+<span id="cb14-246"><a href="#cb14-246" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Ball speed cap: max ~6000 uu/s</span>
+<span id="cb14-247"><a href="#cb14-247" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Arena bounds: positions should stay within field dimensions</span>
+<span id="cb14-248"><a href="#cb14-248" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>No teleportation: large position jumps without matching velocity</span>
+<span id="cb14-249"><a href="#cb14-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-250"><a href="#cb14-250" aria-hidden="true" tabindex="-1"></a><span class="fu">### 7.2 Sampling Issues</span></span>
+<span id="cb14-251"><a href="#cb14-251" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Are there gaps in the data (missing frames)?</span>
+<span id="cb14-252"><a href="#cb14-252" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Is the sampling rate consistent?</span>
+<span id="cb14-253"><a href="#cb14-253" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Check <span class="in">`current_time`</span> or <span class="in">`frame_time`</span> columns for irregularities</span>
+<span id="cb14-254"><a href="#cb14-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-255"><a href="#cb14-255" aria-hidden="true" tabindex="-1"></a><span class="fu">### 7.3 Player Slot Consistency</span></span>
+<span id="cb14-256"><a href="#cb14-256" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Do player slots (p0, p1, ...) map consistently within a replay?</span>
+<span id="cb14-257"><a href="#cb14-257" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Are there replays with unexpected player counts?</span>
+<span id="cb14-258"><a href="#cb14-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-259"><a href="#cb14-259" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb14-260"><a href="#cb14-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-261"><a href="#cb14-261" aria-hidden="true" tabindex="-1"></a><span class="fu">## 8. Visualization Recommendations</span></span>
+<span id="cb14-262"><a href="#cb14-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-263"><a href="#cb14-263" aria-hidden="true" tabindex="-1"></a><span class="fu">### Essential Plots for Initial EDA</span></span>
+<span id="cb14-264"><a href="#cb14-264" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Replay length histogram** - understand data scale</span>
+<span id="cb14-265"><a href="#cb14-265" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**3D trajectory plot** (single replay) - visual intuition</span>
+<span id="cb14-266"><a href="#cb14-266" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Velocity magnitude over time** (single replay) - see impacts</span>
+<span id="cb14-267"><a href="#cb14-267" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Time-between-impacts histogram** - quantify discontinuity</span>
+<span id="cb14-268"><a href="#cb14-268" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Autocorrelation plot** - understand temporal structure</span>
+<span id="cb14-269"><a href="#cb14-269" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Feature correlation heatmap** - identify redundancies</span>
+<span id="cb14-270"><a href="#cb14-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-271"><a href="#cb14-271" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interactive Visualization (Jupyter)</span></span>
+<span id="cb14-272"><a href="#cb14-272" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Use plotly for 3D trajectories (rotate/zoom)</span>
+<span id="cb14-273"><a href="#cb14-273" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Use ipywidgets for parameter exploration</span>
+<span id="cb14-274"><a href="#cb14-274" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Animate ball movement over time</span>
+<span id="cb14-275"><a href="#cb14-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-276"><a href="#cb14-276" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb14-277"><a href="#cb14-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-278"><a href="#cb14-278" aria-hidden="true" tabindex="-1"></a><span class="fu">## 9. Practical Workflow</span></span>
+<span id="cb14-279"><a href="#cb14-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-280"><a href="#cb14-280" aria-hidden="true" tabindex="-1"></a><span class="fu">### Phase 1: Dataset Overview</span></span>
+<span id="cb14-281"><a href="#cb14-281" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb14-282"><a href="#cb14-282" aria-hidden="true" tabindex="-1"></a><span class="co"># Load sample of replays</span></span>
+<span id="cb14-283"><a href="#cb14-283" aria-hidden="true" tabindex="-1"></a>loader <span class="op">=</span> ReplayDataset(data_dir, db_path)</span>
+<span id="cb14-284"><a href="#cb14-284" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> loader.load_sample(n<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb14-285"><a href="#cb14-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-286"><a href="#cb14-286" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic stats</span></span>
+<span id="cb14-287"><a href="#cb14-287" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Replays: </span><span class="sc">{</span><span class="bu">len</span>(sample)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-288"><a href="#cb14-288" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Frame counts: </span><span class="sc">{</span>[<span class="bu">len</span>(r) <span class="cf">for</span> r <span class="kw">in</span> sample]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-289"><a href="#cb14-289" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-290"><a href="#cb14-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-291"><a href="#cb14-291" aria-hidden="true" tabindex="-1"></a><span class="fu">### Phase 2: Single Replay Deep Dive</span></span>
+<span id="cb14-292"><a href="#cb14-292" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb14-293"><a href="#cb14-293" aria-hidden="true" tabindex="-1"></a><span class="co"># Pick one replay and understand it thoroughly</span></span>
+<span id="cb14-294"><a href="#cb14-294" aria-hidden="true" tabindex="-1"></a>replay <span class="op">=</span> sample[<span class="dv">0</span>]</span>
+<span id="cb14-295"><a href="#cb14-295" aria-hidden="true" tabindex="-1"></a>plot_trajectory_3d(replay)</span>
+<span id="cb14-296"><a href="#cb14-296" aria-hidden="true" tabindex="-1"></a>plot_velocity_over_time(replay)</span>
+<span id="cb14-297"><a href="#cb14-297" aria-hidden="true" tabindex="-1"></a>plot_acf(replay[<span class="st">'Ball - linear velocity x'</span>])</span>
+<span id="cb14-298"><a href="#cb14-298" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-299"><a href="#cb14-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-300"><a href="#cb14-300" aria-hidden="true" tabindex="-1"></a><span class="fu">### Phase 3: Cross-Replay Patterns</span></span>
+<span id="cb14-301"><a href="#cb14-301" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb14-302"><a href="#cb14-302" aria-hidden="true" tabindex="-1"></a><span class="co"># Aggregate statistics across replays</span></span>
+<span id="cb14-303"><a href="#cb14-303" aria-hidden="true" tabindex="-1"></a>all_velocities <span class="op">=</span> concatenate ball velocities <span class="im">from</span> <span class="bu">all</span> replays</span>
+<span id="cb14-304"><a href="#cb14-304" aria-hidden="true" tabindex="-1"></a>plot_histogram(all_velocities)</span>
+<span id="cb14-305"><a href="#cb14-305" aria-hidden="true" tabindex="-1"></a>compute_mean_autocorrelation()</span>
+<span id="cb14-306"><a href="#cb14-306" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-307"><a href="#cb14-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-308"><a href="#cb14-308" aria-hidden="true" tabindex="-1"></a><span class="fu">### Phase 4: Task-Specific Analysis</span></span>
+<span id="cb14-309"><a href="#cb14-309" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb14-310"><a href="#cb14-310" aria-hidden="true" tabindex="-1"></a><span class="co"># For ball prediction task:</span></span>
+<span id="cb14-311"><a href="#cb14-311" aria-hidden="true" tabindex="-1"></a><span class="co"># - How does prediction error grow with horizon?</span></span>
+<span id="cb14-312"><a href="#cb14-312" aria-hidden="true" tabindex="-1"></a><span class="co"># - What's the distribution of time-between-impacts?</span></span>
+<span id="cb14-313"><a href="#cb14-313" aria-hidden="true" tabindex="-1"></a><span class="co"># - Can we identify "easy" vs "hard" prediction windows?</span></span>
+<span id="cb14-314"><a href="#cb14-314" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-315"><a href="#cb14-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-316"><a href="#cb14-316" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb14-317"><a href="#cb14-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-318"><a href="#cb14-318" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
+<span id="cb14-319"><a href="#cb14-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-320"><a href="#cb14-320" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">statsmodels documentation</span><span class="co">](https://www.statsmodels.org/)</span> - ACF, PACF, stationarity tests</span>
+<span id="cb14-321"><a href="#cb14-321" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">scipy.signal</span><span class="co">](https://docs.scipy.org/doc/scipy/reference/signal.html)</span> - spectral analysis, filtering</span>
+<span id="cb14-322"><a href="#cb14-322" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">ruptures</span><span class="co">](https://centre-borelli.github.io/ruptures-docs/)</span> - change point detection</span>
+<span id="cb14-323"><a href="#cb14-323" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">tslearn</span><span class="co">](https://tslearn.readthedocs.io/)</span> - time series clustering, DTW</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

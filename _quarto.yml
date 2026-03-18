@@ -1,0 +1,37 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "Impulse Analysis"
+  description: "Next-frame prediction on RLCS 2024 Rocket League replay data"
+  navbar:
+    left:
+      - text: "EDA"
+        menu:
+          - text: "1 · Dataset Level"
+            href: notebooks/01_eda_dataset_level.ipynb
+          - text: "2 · Single Replay"
+            href: notebooks/02_eda_single_replay.ipynb
+          - text: "3 · Feature-Wise"
+            href: notebooks/03_eda_feature-wise.ipynb
+          - text: "4 · Segments"
+            href: notebooks/04_eda_segments.ipynb
+      - text: "Models"
+        menu:
+          - text: "5 · Baseline Models"
+            href: notebooks/05_baseline_models.ipynb
+          - text: "6 · Linear Model"
+            href: notebooks/06_linear_model.ipynb
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    code-fold: true
+    code-tools: true
+
+execute:
+  freeze: auto
+  echo: true
+  warning: false

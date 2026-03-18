@@ -15,3 +15,6 @@ wheels/
 !README.md
 replay-cache/
 *.parquet
+
+/.quarto/
+**/*.quarto_ipynb
