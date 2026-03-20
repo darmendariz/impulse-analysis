@@ -1,0 +1,73 @@
+_wandb:
+    value:
+        cli_version: 0.25.1
+        e:
+            zemodx0ohlayjh2mrlw8gvjy3rhegtl7:
+                apple:
+                    ecpuCores: 4
+                    gpuCores: 8
+                    memoryGb: 8
+                    name: Apple M3
+                    pcpuCores: 4
+                    ramTotalBytes: "8589934592"
+                    swapTotalBytes: "7516192768"
+                codePath: /Users/david/dev/impulse-analysis/notebooks/06_linear_model.ipynb
+                codePathLocal: 06_linear_model.ipynb
+                cpu_count: 8
+                cpu_count_logical: 8
+                disk:
+                    /:
+                        total: "245107195904"
+                        used: "217213599744"
+                email: daarmendariz95@gmail.com
+                executable: /Users/david/dev/impulse-analysis/.venv/bin/python
+                git:
+                    commit: 7287e3e8c08e5b0ae90adf4fff46e78faa044722
+                    remote: https://github.com/darmendariz/impulse-analysis.git
+                host: Davids-MacBook-Air.local
+                memory:
+                    total: "8589934592"
+                os: macOS-14.6.1-arm64-arm-64bit
+                program: /Users/david/dev/impulse-analysis/notebooks/06_linear_model.ipynb
+                python: CPython 3.12.7
+                root: /Users/david/dev/impulse-analysis/notebooks
+                startedAt: "2026-03-18T18:13:19.609112Z"
+                writerId: zemodx0ohlayjh2mrlw8gvjy3rhegtl7
+        m: []
+        python_version: 3.12.7
+        t:
+            "1":
+                - 5
+                - 53
+            "2":
+                - 5
+                - 53
+            "3":
+                - 2
+                - 13
+                - 16
+            "4": 3.12.7
+            "5": 0.25.1
+            "8":
+                - 1
+                - 2
+            "12": 0.25.1
+            "13": darwin-arm64
+dataset:
+    value: rlcs2024v1
+feature_preset:
+    value: physics
+fitting_method:
+    value: ridge
+model:
+    value: linear
+n_replays:
+    value: 200
+seed:
+    value: 51
+test_ratio:
+    value: 0.15
+train_ratio:
+    value: 0.7
+val_ratio:
+    value: 0.15
